@@ -59,13 +59,15 @@ export default function TaskItem({ task, isSubtask = false }: TaskItemProps) {
     }
   };
 
-  const formatDueDate = (date: Date | string) => {
+  const formatDueDate = (date: Date | string | undefined) => {
+    if (!date) return null;
+    
     // Ensure we have a proper Date object
     const dateObj = date instanceof Date ? date : new Date(date);
     
     // Check if the date is valid
     if (isNaN(dateObj.getTime())) {
-      return 'Invalid date';
+      return null;
     }
     
     const today = new Date();
@@ -86,7 +88,7 @@ export default function TaskItem({ task, isSubtask = false }: TaskItemProps) {
     !task.completed;
 
   return (
-    <div className={`task-item ${isSubtask ? 'ml-8' : ''}`}>
+    <div className={`bg-base-100 border border-base-300 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 mb-3 ${isSubtask ? 'ml-8' : ''}`}>
       <div className="flex items-start gap-3 p-4">
         {/* Checkbox */}
         <button
@@ -142,7 +144,7 @@ export default function TaskItem({ task, isSubtask = false }: TaskItemProps) {
             )}
 
             {/* Due Date */}
-            {task.dueDate && (
+            {task.dueDate && formatDueDate(task.dueDate) && (
               <span className={`flex items-center gap-1 ${
                 isOverdue ? 'text-error' : 'text-base-content/70'
               }`}>

@@ -71,9 +71,12 @@ export default function Sidebar() {
   return (
     <div className="h-full flex flex-col">
       {/* App Header */}
-      <div className="p-6 border-b border-base-300">
-        <h1 className="text-xl font-bold text-primary">📋 Tasker</h1>
-        <p className="text-sm text-base-content/70">Your personal task manager</p>
+      <div className="p-6 border-b border-base-300 bg-gradient-to-r from-primary/5 to-secondary/5">
+        <h1 className="text-xl font-bold text-primary flex items-center gap-2">
+          <span className="text-2xl">📋</span>
+          Tasker
+        </h1>
+        <p className="text-sm text-base-content/70 mt-1">Your personal task manager</p>
       </div>
 
       {/* Navigation */}
