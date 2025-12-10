@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useEffect } from 'react';
-import { useTasker } from '@/hooks/useTasker';
+import { useTaskerContext } from '@/contexts/TaskerContext';
 import Sidebar from './Sidebar';
 import Header from './Header';
 
@@ -10,7 +10,7 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const { theme } = useTasker();
+  const { theme } = useTaskerContext();
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);

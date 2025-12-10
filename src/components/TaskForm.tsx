@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useTasker } from '@/hooks/useTasker';
+import { useTaskerContext } from '@/contexts/TaskerContext';
 import { parseTaskInput, getSuggestions } from '@/lib/parser';
 
 interface TaskFormProps {
@@ -10,7 +10,7 @@ interface TaskFormProps {
 }
 
 export default function TaskForm({ placeholder = "Add a task...", onTaskAdded }: TaskFormProps) {
-  const { lists, tags, selectedListId, addTask, addTag } = useTasker();
+  const { lists, tags, selectedListId, addTask, addTag } = useTaskerContext();
   const [input, setInput] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState<{

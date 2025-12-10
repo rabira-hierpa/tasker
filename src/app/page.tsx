@@ -1,12 +1,12 @@
 'use client';
 
-import { useTasker } from '@/hooks/useTasker';
+import { TaskerProvider, useTaskerContext } from '@/contexts/TaskerContext';
 import Layout from '@/components/Layout';
 import TaskForm from '@/components/TaskForm';
 import TaskItem from '@/components/TaskItem';
 
-export default function HomePage() {
-  const { filteredTasks, isLoading } = useTasker();
+function TaskerApp() {
+  const { filteredTasks, isLoading } = useTaskerContext();
 
   if (isLoading) {
     return (
@@ -72,5 +72,13 @@ export default function HomePage() {
         )}
       </div>
     </Layout>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <TaskerProvider>
+      <TaskerApp />
+    </TaskerProvider>
   );
 }

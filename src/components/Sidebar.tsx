@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useTasker } from '@/hooks/useTasker';
+import { useTaskerContext } from '@/contexts/TaskerContext';
 
 export default function Sidebar() {
   const { 
@@ -16,7 +16,7 @@ export default function Sidebar() {
     addTag,
     updateTag,
     deleteTag
-  } = useTasker();
+  } = useTaskerContext();
   
   const [showNewListForm, setShowNewListForm] = useState(false);
   const [showNewTagForm, setShowNewTagForm] = useState(false);

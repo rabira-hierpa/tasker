@@ -75,11 +75,29 @@ export function parseTaskInput(input: string, availableLists: Array<{id: string,
     
     if (TIME_KEYWORDS[timeValue]) {
       result.dueDate = TIME_KEYWORDS[timeValue]();
+      
+      // Auto-assign to appropriate smart list based on due date
+      if (timeValue === 'today') {
+        result.listId = 'today';
+      } else if (timeValue === 'tomorrow' || timeValue === 'next week' || timeValue === 'next month') {
+        result.listId = 'upcoming';
+      }
     } else {
       // Try to parse as date
       const parsedDate = parseDate(timeValue);
       if (parsedDate) {
         result.dueDate = parsedDate;
+        
+        // Auto-assign to appropriate smart list based on parsed date
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        if (parsedDate.toDateString() === today.toDateString()) {
+          result.listId = 'today';
+        } else if (parsedDate > today) {
+          result.listId = 'upcoming';
+        }
       }
     }
     

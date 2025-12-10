@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Task, Priority } from '@/types';
-import { useTasker } from '@/hooks/useTasker';
+import { useTaskerContext } from '@/contexts/TaskerContext';
 
 interface TaskItemProps {
   task: Task;
@@ -17,7 +17,7 @@ export default function TaskItem({ task, isSubtask = false }: TaskItemProps) {
     deleteTask, 
     toggleTaskComplete, 
     addSubtask 
-  } = useTasker();
+  } = useTaskerContext();
   
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);

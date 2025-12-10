@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useTasker } from '@/hooks/useTasker';
+import { useState, useEffect, useRef } from 'react';
+import { useTaskerContext } from '@/contexts/TaskerContext';
 import { exportTasks } from '@/lib/export';
 
 export default function Header() {
@@ -16,12 +16,37 @@ export default function Header() {
     setSort, 
     theme, 
     toggleTheme 
-  } = useTasker();
+  } = useTaskerContext();
   
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const filterRef = useRef<HTMLDivElement>(null);
+  const exportRef = useRef<HTMLDivElement>(null);
 
-  const selectedList = lists.find(list => list.id === selectedListId);
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+        setShowFilterMenu(false);
+      }
+      if (exportRef.current && !exportRef.current.contains(event.target as Node)) {
+        setShowExportMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Smart lists definition (should match Sidebar)
+  const smartLists = [
+    { id: 'inbox', name: 'Inbox', icon: '📥' },
+    { id: 'today', name: 'Today', icon: '📅' },
+    { id: 'upcoming', name: 'Upcoming', icon: '📆' },
+  ];
+
+  const selectedList = smartLists.find(list => list.id === selectedListId) || 
+                      lists.find(list => list.id === selectedListId);
   const taskCount = filteredTasks.length;
   const completedCount = filteredTasks.filter(task => task.completed).length;
 
@@ -71,7 +96,7 @@ export default function Header() {
           </div>
 
           {/* Filter dropdown */}
-          <div className="dropdown dropdown-end">
+          <div className="dropdown dropdown-end" ref={filterRef}>
             <div 
               tabIndex={0} 
               role="button" 
@@ -157,7 +182,7 @@ export default function Header() {
           </div>
 
           {/* Export dropdown */}
-          <div className="dropdown dropdown-end">
+          <div className="dropdown dropdown-end" ref={exportRef}>
             <div 
               tabIndex={0} 
               role="button" 

@@ -287,24 +287,26 @@ export function useTasker() {
       if (selectedListId && selectedListId !== 'all') {
         if (selectedListId === 'today') {
           const today = new Date();
-          if (task.dueDate) {
+          // Show tasks that are either assigned to 'today' list OR have today's due date
+          const isAssignedToToday = task.listId === 'today';
+          const hasTodayDueDate = task.dueDate && (() => {
             const dueDate = task.dueDate instanceof Date ? task.dueDate : new Date(task.dueDate);
-            const isToday = dueDate.getDate() === today.getDate() &&
+            return dueDate.getDate() === today.getDate() &&
               dueDate.getMonth() === today.getMonth() &&
               dueDate.getFullYear() === today.getFullYear();
-            if (!isToday) return false;
-          } else {
-            return false;
-          }
+          })();
+          
+          if (!isAssignedToToday && !hasTodayDueDate) return false;
         } else if (selectedListId === 'upcoming') {
           const today = new Date();
-          if (task.dueDate) {
+          // Show tasks that are either assigned to 'upcoming' list OR have future due dates
+          const isAssignedToUpcoming = task.listId === 'upcoming';
+          const hasFutureDueDate = task.dueDate && (() => {
             const dueDate = task.dueDate instanceof Date ? task.dueDate : new Date(task.dueDate);
-            const isUpcoming = dueDate > today;
-            if (!isUpcoming) return false;
-          } else {
-            return false;
-          }
+            return dueDate > today;
+          })();
+          
+          if (!isAssignedToUpcoming && !hasFutureDueDate) return false;
         } else {
           if (task.listId !== selectedListId) return false;
         }
