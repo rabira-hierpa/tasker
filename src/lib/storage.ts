@@ -172,7 +172,14 @@ function convertDates(obj: any): any {
   const dateFields = ['createdAt', 'updatedAt', 'dueDate'];
   dateFields.forEach(field => {
     if (converted[field] && typeof converted[field] === 'string') {
-      converted[field] = new Date(converted[field]);
+      const date = new Date(converted[field]);
+      // Only set if the date is valid
+      if (!isNaN(date.getTime())) {
+        converted[field] = date;
+      } else {
+        // Remove invalid dates
+        delete converted[field];
+      }
     }
   });
   

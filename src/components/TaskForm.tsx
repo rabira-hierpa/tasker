@@ -137,14 +137,14 @@ export default function TaskForm({ placeholder = "Add a task...", onTaskAdded }:
 
   return (
     <div className="relative">
-      <div className="bg-base-100 border border-base-300 rounded-lg p-4 focus-within:border-primary transition-colors">
+      <div className="bg-base-100 border-2 border-base-300 rounded-xl p-4 focus-within:border-primary focus-within:shadow-lg transition-all duration-200 hover:shadow-md">
         <textarea
           ref={textareaRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="inline-form resize-none overflow-hidden"
+          className="inline-form resize-none overflow-hidden text-base"
           rows={1}
         />
         
@@ -190,8 +190,11 @@ export default function TaskForm({ placeholder = "Add a task...", onTaskAdded }:
             <button
               onClick={handleSubmit}
               disabled={!input.trim()}
-              className="btn btn-primary btn-sm"
+              className="btn btn-primary btn-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50"
             >
+              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
               Add Task
             </button>
             
